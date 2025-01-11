@@ -62,8 +62,4 @@ app.conf.beat_schedule = {
         'task': 'at_this_day_task',
         'schedule': crontab(hour=21, minute=0),
     },
-    'run-main-task-every-day-at-21-35pm': {
-        'task': 'at_this_day_task',
-        'schedule': crontab(hour=21, minute=35),
-    },
 }
