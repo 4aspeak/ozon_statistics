@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "ozon-statistics"
+version = "0.1.0"
+description = ""
+authors = ["sbr <sungatullinbulat05@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+environ-config = "^24.1.0"
+requests = "^2.32.3"
+gspread = "^6.1.4"
+pytz = "^2024.2"
+pandas = "^2.2.3"
+celery = "^5.4.0"
+redis = "^5.2.0"
+flower = "^2.0.1"
+aenum = "^3.1.15"
+pydantic = "^2.10.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
