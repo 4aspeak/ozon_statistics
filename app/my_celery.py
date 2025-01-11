@@ -36,7 +36,7 @@ def every_3_hours_task():
 app.conf.beat_schedule = {
     'run-main-task-every-day-at-1am': {
         'task': 'main_task',
-        'schedule': crontab(hour=20, minute=40),
+        'schedule': crontab(hour=0, minute=30),
     },
     'run-main-task-every-3-hours-1': {
         'task': 'every_3_hours_task',
