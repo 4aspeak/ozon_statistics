@@ -22,5 +22,5 @@ services:
       - .:/app
     depends_on:
       - redis
-    command: [" celery", "-A", "app.my_celery", "beat", "--loglevel=info"]
+    command: ["celery", "-A", "app.my_celery", "beat", "--loglevel=info"]
     restart: always
