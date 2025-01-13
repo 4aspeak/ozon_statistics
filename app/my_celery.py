@@ -34,9 +34,13 @@ def at_this_day_task():
 
 
 app.conf.beat_schedule = {
-    'run-main-task-every-day-at-1am': {
+    'run-main-task-last-day-at-1am': {
         'task': 'at_last_day_task',
         'schedule': crontab(hour=0, minute=30),
+    },
+    'run-main-task-last-day-at-3am': {
+        'task': 'at_last_day_task',
+        'schedule': crontab(hour=3, minute=30),
     },
     'run-main-task-every-day-at-3am': {
         'task': 'at_this_day_task',
