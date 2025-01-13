@@ -470,7 +470,7 @@ def main(date: datetime.datetime):
 if __name__ == '__main__':
 
     start_date = datetime.datetime(
-        year=2025, month=1, day=11, hour=0, minute=0, second=0, tzinfo=pytz.timezone('Europe/Moscow')
+        year=2025, month=1, day=12, hour=0, minute=0, second=0, tzinfo=pytz.timezone('Europe/Moscow')
     )
     one_day = datetime.timedelta(days=1)
     for i in range(2):
