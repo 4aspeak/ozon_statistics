@@ -341,6 +341,7 @@ def main(date: datetime.datetime):
     ozon_performance = OzonPerformance()
     general_data = {}
     str_date = date.strftime("%d.%m.%y")
+
     logger.info("Starting checking")
     logger.info("Calculation start: Analytical data")
     analytical_data = get_analytical_data(ozon_seller, date)
@@ -395,7 +396,7 @@ def main(date: datetime.datetime):
         else:
             worksheet.set_worksheet(worksheet_of_table)
         worksheet.set_all_records()
-        worksheet.df[str_date] = [
+        worksheet.df[f"Дата: {str_date}"] = [
             sku_data.get(AnalyticalDataFields.revenue.value[ValueName.main_name], 0),
             sku_data.get(AnalyticalDataFields.ordered_units.value[ValueName.main_name], 0),
             sku_data.get(AnalyticalDataFields.hits_tocart.value[ValueName.main_name], 0),
@@ -426,7 +427,7 @@ def main(date: datetime.datetime):
     total_all_worksheet = CustomWorksheet()
     total_all_worksheet.set_worksheet(table.get_worksheet_by_title("All"))
     total_all_worksheet.set_all_records()
-    total_all_worksheet.df[str_date] = [
+    total_all_worksheet.df[f"Дата: {str_date}"] = [
         general_data["total"].get(AnalyticalDataFields.revenue.value[ValueName.main_name], 0),
         general_data["total"].get(AnalyticalDataFields.ordered_units.value[ValueName.main_name], 0),
         general_data["total"].get(AnalyticalDataFields.hits_tocart.value[ValueName.main_name], 0),
@@ -457,7 +458,7 @@ def main(date: datetime.datetime):
     short_all_worksheet = CustomWorksheet()
     short_all_worksheet.set_worksheet(table.get_worksheet_by_title("Short All"))
     short_all_worksheet.set_all_records()
-    short_all_worksheet.df[str_date] = [
+    short_all_worksheet.df[f"Дата: {str_date}"] = [
         general_data["total"].get(AnalyticalDataFields.revenue.value[ValueName.main_name], 0),
         general_data["total"].get(PvpFields.money_spent.value[ValueName.main_name], 0),
         general_data["total"].get(TrfFields.money_spent.value[ValueName.main_name], 0),
@@ -470,10 +471,10 @@ def main(date: datetime.datetime):
 if __name__ == '__main__':
 
     start_date = datetime.datetime(
-        year=2025, month=1, day=12, hour=0, minute=0, second=0, tzinfo=pytz.timezone('Europe/Moscow')
+        year=2025, month=1, day=16, hour=0, minute=0, second=0, tzinfo=pytz.timezone('Europe/Moscow')
     )
     one_day = datetime.timedelta(days=1)
-    for i in range(2):
+    for i in range(1):
         logger.info(f"Start algorithm for date: {start_date}")
         main(start_date)
         new_date = start_date + one_day

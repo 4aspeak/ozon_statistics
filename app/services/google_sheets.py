@@ -146,7 +146,6 @@ class CustomGoogleTable:
 
 if __name__ == '__main__':
     sh = CustomGoogleTable()
-    sh.add_worksheet("test", rows=1, cols=1)
     worksheet = CustomWorksheet()
     worksheet.set_worksheet(sh.get_worksheet_by_title("test"))
     worksheet.add_base_columns()
