@@ -1,15 +1,21 @@
+import datetime
+
+import pytz
 from celery import Celery
 from celery.schedules import crontab
-import pytz
-import datetime
-from app.settings import logger
-from app.main import main
 
+from app.main import main
+from app.settings import logger
 
 logger.info("Starting Celery")
 
 app = Celery('app', broker='redis://redis:6379/0')
-app.conf.timezone = 'Europe/Moscow'
+
+# Настройка параметров Celery
+app.conf.update(
+    timezone='Europe/Moscow',
+    broker_connection_retry_on_startup=True,
+)
 
 
 @app.task(name='at_last_day_task')
