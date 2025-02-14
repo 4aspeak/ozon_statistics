@@ -34,27 +34,33 @@ class OzonSeller:
         self.client_id = client_id
         self.api_key = api_key
 
-    def products(self):
+    def products(self, last_id: Optional[str] = None, limit: int = 1000):
         result = []
-        url = f"{self.host}/v2/product/list"
+        url = f"{self.host}/v3/product/list"
         headers = {
             "Content-Type": "application/json",
             "Client-Id": self.client_id,
             "Api-Key": self.api_key
         }
+        body = {
+            "filter": {"visibility": "VISIBLE"},
+            "limit": limit,
+        }
+        if last_id is not None:
+            body["last_id"] = last_id
+
         try:
-            response = requests.post(url, headers=headers)
+            response = requests.post(url, headers=headers, json=body)
             result = response.json()
         except Exception as e:
             logger.error(f"Ошибка при запросе данных из OzonSeller: {e}\n{traceback.format_exc()}")
         return result
 
-    def product_info(self, product_id: int, offer_id: str):
+    def product_info(self, offer_ids: list[str]):
         result = None
-        url = f"{self.host}/v2/product/info"
+        url = f"{self.host}/v3/product/info/list"
         body = {
-            "product_id": product_id,
-            "offer_id": offer_id
+            "offer_id": offer_ids
         }
         headers = {
             "Content-Type": "application/json",

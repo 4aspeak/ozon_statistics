@@ -1,5 +1,6 @@
 import time
 import traceback
+from pprint import pprint
 
 from app.enums import ProductFields, AnalyticalDataFields, PvpFields, TrfFields, ValueName
 from app.services.google_sheets import CustomGoogleTable, CustomWorksheet
@@ -264,21 +265,44 @@ def get_trf(ozon_performance: OzonPerformance, date_from: datetime.datetime, dat
 def get_products(ozon_seller: OzonSeller):
     products_dict = {}
     try:
-        products = ozon_seller.products()["result"]["items"]
-        for product in products:
-            offer_id = product["offer_id"]
-            product_id = product["product_id"]
-            product_info = ozon_seller.product_info(product_id, offer_id)
-            sku = product_info["result"]["sku"]
-            is_archived = product_info["result"]["is_archived"]
+        ozon_products = ozon_seller.products(limit=1000)
+        products = ozon_products["result"]["items"]
+        total = ozon_products["result"]["total"] - 1
+        last_id = ozon_products["result"]["last_id"]
+
+        ozon_product_info_list = ozon_seller.product_info(
+            offer_ids=[product["offer_id"] for product in products]
+        )
+        product_info_list = ozon_product_info_list["items"]
+        for product_info in product_info_list:
+            sku = product_info["sources"][0]["sku"]
+            offer_id = product_info["offer_id"]
+            product_id = product_info["id"]
             if sku not in products_dict:
                 products_dict[sku] = {
                     "offer_id": offer_id,
-                    # "product_info": product_info["result"],
-                    # "offer_id": offer_id,
-                    "product_id": product_id,
-                    "is_archived": is_archived,
+                    "product_id": product_id
                 }
+
+        for i in range(total // 1000):
+            ozon_products = ozon_seller.products(last_id=last_id, limit=1000)
+            last_id = ozon_products["result"]["last_id"]
+            products.extend(ozon_products["result"]["items"])
+
+            ozon_product_info_list = ozon_seller.product_info(
+                offer_ids=[product["offer_id"] for product in products]
+            )
+            product_info_list = ozon_product_info_list["items"]
+            for product_info in product_info_list:
+                sku = product_info["sources"][0]["sku"]
+                offer_id = product_info["offer_id"]
+                product_id = product_info["id"]
+                if sku not in products_dict:
+                    products_dict[sku] = {
+                        "offer_id": offer_id,
+                        "product_id": product_id
+                    }
+
     except Exception as e:
         logger.error(f"Ошибка при получении списка товаров из OzonSeller: {e}\n{traceback.format_exc()}")
         return get_products(ozon_seller)
@@ -471,10 +495,10 @@ def main(date: datetime.datetime):
 if __name__ == '__main__':
 
     start_date = datetime.datetime(
-        year=2025, month=1, day=16, hour=0, minute=0, second=0, tzinfo=pytz.timezone('Europe/Moscow')
+        year=2025, month=2, day=12, hour=0, minute=0, second=0, tzinfo=pytz.timezone('Europe/Moscow')
     )
     one_day = datetime.timedelta(days=1)
-    for i in range(1):
+    for i in range(3):
         logger.info(f"Start algorithm for date: {start_date}")
         main(start_date)
         new_date = start_date + one_day
