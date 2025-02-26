@@ -119,7 +119,6 @@ class OzonPerformance:
         response = requests.post(url, json=body, headers=headers)
         result["data"] = response.json()
         result["status_code"] = response.status_code
-        print("result: {}".format(result))
         return result
 
     def get_report_campaign_statistics(self, uuid_order: str):
