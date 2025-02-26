@@ -102,10 +102,6 @@ class OzonPerformance:
         return result
 
     def generate_campaign_statistics(self, campaign_ids: List[int], date_from: str, date_to: str):
-        print(f"campaign_ids: {campaign_ids}")
-        print(f"date_from: {date_from}")
-        print(f"date_to: {date_to}")
-
         result = {
             "data": {},
             "status_code": None

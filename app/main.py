@@ -198,12 +198,18 @@ def get_trf(ozon_performance: OzonPerformance, date_from: datetime.datetime, dat
     campaigns = get_campaigns_list(ozon_performance)
     result = {}
     logger.info("TRF: Length of campaigns list = {0}".format(len(campaigns)))
-    for i in range(len(campaigns) // 9 + 1):
+    iter_count = len(campaigns) // 10
+    if iter_count * 10 < len(campaigns):
+        iter_count += 1
+
+    for i in range(iter_count):
         logger.info("TRF: api - generate_campaign_statistics call")
-        generation_campaign_statistics = ozon_performance.generate_campaign_statistics(
-            campaign_ids=campaigns[i * 9:(i + 1) * 9],
-            date_from=get_date_of_ozon_format(date_from),
-            date_to=get_date_of_ozon_format(date_to)
+        campaign_ids = campaigns[i * 10: (i + 1) * 10]
+        date_from = get_date_of_ozon_format(date_from)
+        date_to = get_date_of_ozon_format(date_to)
+        generation_campaign_statistics = ozon_performance.generate_campaign_statistics(campaign_ids, date_from, date_to)
+        logger.info(
+            f"campaign_ids: {campaign_ids}, date_from: {date_from}, date_to: {date_to}"
         )
         data = generation_campaign_statistics["data"]
         status_code = generation_campaign_statistics["status_code"]
@@ -495,7 +501,7 @@ def main(date: datetime.datetime):
 if __name__ == '__main__':
 
     start_date = datetime.datetime(
-        year=2025, month=2, day=12, hour=0, minute=0, second=0, tzinfo=pytz.timezone('Europe/Moscow')
+        year=2025, month=2, day=22, hour=0, minute=0, second=0, tzinfo=pytz.timezone('Europe/Moscow')
     )
     one_day = datetime.timedelta(days=1)
     for i in range(3):
