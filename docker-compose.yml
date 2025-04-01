@@ -16,6 +16,9 @@ services:
     restart: always
     volumes:
       - redis-data:/data
+    environment:
+      - REDIS_MAXMEMORY=512mb
+      - REDIS_MAXMEMORY_POLICY=allkeys-lru
     networks:
       - ozon-network
 

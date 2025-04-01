@@ -505,10 +505,10 @@ def main(date: datetime.datetime):
 if __name__ == '__main__':
 
     start_date = datetime.datetime(
-        year=2025, month=2, day=26, hour=0, minute=0, second=0, tzinfo=pytz.timezone('Europe/Moscow')
+        year=2025, month=3, day=30, hour=0, minute=0, second=0, tzinfo=pytz.timezone('Europe/Moscow')
     )
     one_day = datetime.timedelta(days=1)
-    for i in range(1):
+    for i in range(3):
         logger.info(f"Start algorithm for date: {start_date}")
         main(start_date)
         new_date = start_date + one_day

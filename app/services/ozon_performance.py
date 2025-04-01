@@ -80,8 +80,9 @@ class OzonPerformance:
             "Authorization": f"Bearer {self.access_token}"
         }
         response = requests.get(url, headers=headers)
-        result["data"] = response.json()
-        result["status_code"] = response.status_code
+        if response.content:
+            result["data"] = response.json()
+            result["status_code"] = response.status_code
         return result
 
     def get_report(self, uuid_order: str):
